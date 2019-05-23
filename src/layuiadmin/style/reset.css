@@ -1,0 +1,35 @@
+/*头部*/
+.layui-layout-admin .layui-header{height: 60px;}
+.layui-layout-admin .layui-logo, .layui-layout-admin .layui-header .layui-nav .layui-nav-item{height: 60px;line-height:60px;}
+.layui-layout-admin .layui-logo{height: 60px;line-height:60px;}
+.layui-layout-admin .layui-logo img{width:100%;}
+/*左侧边栏*/
+.layui-side-menu .layui-nav{margin-top:60px;}
+.layui-side-menu .layui-side-scroll{width: 220px;}
+/*主体内容区 标签栏*/
+.layadmin-pagetabs{top:60px;}
+/*主体内容*/
+.layui-layout-admin .layui-body{top: 100px;}
+/*日期控件*/
+.layui-form-item .layui-input-inline{width: 135px;}
+/*表单控件*/
+.layui-form-item{text-align: center;}
+/*表格*/
+.layui-table-cell{padding: 0 0;}
+.layui-table-cell, .layui-table-tool-panel li {
+    overflow:visible;
+    overflow-x: visible;
+    overflow-y: visible;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+}
+.layui-table-view .layui-table td .layui-table-cell{height:auto;line-height:1.1;}
+/*表格弹层*/
+.layui-layer-content .layui-form{padding-top: 15px;}
+.layui-layer-content .layui-form-label{width: 90px;}
+.layui-layer-content .layui-input-block{margin-left:120px;}
+.layui-layer-content .layui-form{width:90%;margin:0 auto;}
+/*表格弹层-新建*/
+.layui-form .layui-form-item ul.layui-input-block{display:flex; display: -webkit-flex; /* Safari */;flex-direction: row;flex-wrap: nowrap;justify-content:space-between;}
+/*layui-card-header*/
+.layui-card-header{border-left: 5px solid #009688;}

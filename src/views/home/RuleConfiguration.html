@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>智能化数据运维-规则配置</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
+		<link rel="stylesheet" href="../../layuiadmin/style/reset.css" media="all">
+	</head>
+	<body>
+
+		<div class="layui-fluid">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<ul class="layui-row layui-form">
+						<li class=" layui-col-sm3">
+							<div class="layui-form-item">
+								<label class="layui-form-label">告警类别</label>
+								<div class="layui-input-block">
+									<select name="city" lay-verify="required">
+										<option value=""></option>
+										<option value="0">性能</option>
+										<option value="1">可用性</option>
+										<option value="2">错误</option>
+										<option value="3">变化</option>
+										<option value="4">可靠性</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">规则</label>
+								<div class="layui-input-block">
+									<select name="city" lay-verify="required">
+										<option value=""></option>
+										<option value="0">全部</option>
+										<option value="1">阈值</option>
+										<option value="2">孤立点</option>
+										<option value="3">变点</option>
+									</select>
+								</div>
+							</div>
+						</li>
+						<li class=" layui-col-sm2">
+							<div class="layui-form-item">
+								<label class="layui-form-label">级别</label>
+								<div class="layui-input-block">
+									<select name="city" lay-verify="required">
+										<option value=""></option>
+										<option value="0">全部</option>
+										<option value="1">一级</option>
+										<option value="2">二级</option>
+										<option value="3">三级</option>
+										<option value="4">四级</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">启用情况</label>
+								<div class="layui-input-block">
+									<select name="city" lay-verify="required">
+										<option value=""></option>
+										<option value="0">已启用</option>
+										<option value="1">未启用</option>
+									</select>
+								</div>
+							</div>
+						</li>
+						<li class="layui-col-sm6">
+							<ul class="layui-row">
+								<li class="layui-col-sm6">
+									<div class="layui-form-item">
+										<label class="layui-form-label">指标小类</label>
+										<div class="layui-input-block">
+											<select name="city" lay-verify="required">
+												<option value=""></option>
+												<option value="0">CPU使用率</option>
+											</select>
+										</div>
+									</div>
+								</li>
+								<li class="layui-col-sm6">
+									<div class="layui-form-item">
+										<label class="layui-form-label">指标大类</label>
+										<div class="layui-input-block">
+											<select name="city" lay-verify="required">
+												<option value=""></option>
+												<option value="0">CPU使用率</option>
+											</select>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<div class="layui-form-item">
+								<label class="layui-form-label">文件导入</label>
+								<ul class="layui-input-block">
+									<li style="margin-right:10px;">
+										<input type="text" name="QuotaMeaning" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+									</li>
+									<li style="margin-right:10px;">
+										<button type="button" class="layui-btn" id="browseFiles"><i class="layui-icon">&#xe67c;</i>浏览文件</button></li>
+									<li style="margin-right:10px;">
+										<button class="layui-btn" id="FilesSubmit" lay-submit>提交</button></li>
+									<li><button class="layui-btn layui-btn-primary">下载模版</button></li>
+								</ul>
+							</div>
+						</li>
+						<li class="layui-col-sm1">
+							<div class="layui-form-item">
+								<button class="layui-btn" lay-submit lay-filter="formDemo">查询</button></div>
+							<div class="layui-form-item"><button class="layui-btn" id="newBuilt" lay-filter="formDemo">新建</button></div>
+							<div class="layui-form-item"><button class="layui-btn" lay-filter="formDemo">导出</button></div>
+						</li>
+					</ul>
+				</div>
+				<div class="layui-card-header">告警规则列表</div>
+				<div class="layui-card-body">
+					<table id="rule_table" lay-filter="table"></table>
+					<script type="text/html" id="toolbar">
+						<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+              </script>
+				</div>
+			</div>
+		</div>
+		<script src="../../layuiadmin/layui/layui.js"></script>
+		<script>
+			layui.config({
+				base: '../../layuiadmin/' //静态资源所在路径
+			}).extend({
+				index: 'lib/index' //主入口模块
+			}).use(['index', 'jquery','table','layer','form','upload'], function() {
+				var $ = layui.$;
+				var laydate = layui.laydate;
+				var table = layui.table;
+				var layer = layui.layer;
+				var form = layui.form;
+				var upload = layui.upload;
+				//监听提交
+               form.on('submit(formDemo)', function(data){
+               layer.msg(JSON.stringify(data.field));
+               return false;
+               });
+			   //文件上传
+              upload.render({
+                     elem: '#browseFiles',//绑定元素
+                     url: '/api/upload/',//上传接口
+                     auto: false ,//选择文件后不自动上传
+                     bindAction: '#FilesSubmit' ,//指向一个按钮触发上传
+                     choose: function(obj){
+                     //将每次选择的文件追加到文件队列
+                     var files = obj.pushFile();
+    
+                     //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                     obj.preview(function(index, file, result){
+                     console.log(index); //得到文件索引
+                     console.log(file); //得到文件对象
+                     console.log(result); //得到文件base64编码，比如图片
+      
+                     //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+      
+                     //这里还可以做一些 append 文件列表 DOM 的操作
+      
+                    //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                    //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                     });
+                   }
+            });    
+			   //新建
+			   $("#newBuilt").click(function(){
+				   layer.open({
+				   		type: 1,
+				   		title: '新建',
+				   		scrollbar: false, //屏蔽浏览器滚动条
+				   		area: ['500px'],
+				   		content: $('#newBuiltModal'),//这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响 
+				   		btn: ['确定', '取消'],
+				   		yes: function(index, layero){
+				     //按钮【确定】的回调
+				        }
+				  });
+			   })
+				//表格
+				table.render({
+					elem: '#rule_table',
+					url: '../../layuiadmin/json/RuleConfiguration.json', //数据接口
+					limits: [10, 25, 50], //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]
+					page: true, //开启分页
+					even: true, //隔行背景
+					cols: [
+						[ //表头
+							{
+								type: 'numbers', //序号列 根据指标值排序
+								title: '编号',
+								unresize: true, //是否禁用拖拽列宽（默认：false）
+								align: 'center'
+							}, {
+								field: 'Subclass',
+								title: '指标小类',
+								unresize: true, //是否禁用拖拽列宽（默认：false）
+								align: 'center'
+							}, {
+								field: 'QuotaMeaning',
+								title: '指标含义',
+								unresize: true, //是否禁用拖拽列宽（默认：false）
+								align: 'center'
+
+							}, {
+								field: 'Rule',
+								title: '规则',
+								unresize: true, //是否禁用拖拽列宽（默认：false）
+								align: 'center'
+							}, {
+								field: 'UsagSsituation',
+								title: '使用情况',
+								unresize: true, //是否禁用拖拽列宽（默认：false）
+								align: 'center'
+							}, {
+								field: 'Level',
+								title: '级别',
+								unresize: true, //是否禁用拖拽列宽（默认：false）
+								align: 'center'
+							}, {
+								field: 'LargeClass',
+								title: '指标大类',
+								unresize: true, //是否禁用拖拽列宽（默认：false）
+								align: 'center'
+							}, {
+								field: 'Category',
+								title: '告警类别',
+								unresize: true, //是否禁用拖拽列宽（默认：false）
+								align: 'center'
+							}, {
+								field: 'Operation',
+								title: '操作',
+								toolbar: '#toolbar',
+								unresize: true, //是否禁用拖拽列宽（默认：false）
+								align: 'center'
+							}
+						]
+					]
+				});
+
+				//监听工具条
+				table.on('tool(table)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+					var data = obj.data; //获得当前行数据
+					var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+					var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+					if (layEvent === 'edit') { //编辑
+					//编辑框 数据回显
+					    form.val("rule_table", {
+                             "Subclass": data.Subclass,
+                             "QuotaMeaning":  data.QuotaMeaning,
+                             "Rule":  data.Rule,
+                             "UsagSsituation":  data.UsagSsituation,
+                             "Level":  data.Level,
+                             "LargeClass":  data.LargeClass,
+                             "Category":  data.Category
+                        })
+						layer.open({
+							type: 1,
+							title: '修改',
+							scrollbar: false, //屏蔽浏览器滚动条
+							area: ['500px'],
+							content: $('#editModal'),//这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响 
+							 btn: ['确定', '取消'],
+							 yes: function(index, layero){
+    //按钮【确定】的回调
+  }
+						});
+					} else if (layEvent === 'del') { //删除
+						layer.confirm('真的删除行么', {title:'提示'},function(index) {
+							obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+							layer.close(index);
+							//向服务端发送删除指令
+						});
+					} 
+				});
+			})
+		</script>
+	</body>
+	<div id="newBuiltModal" style="display: none;">
+		<ul class="layui-form" lay-filter="rule_table">
+			<li class="layui-form-item">
+				<label class="layui-form-label">指标小类</label>
+				<div class="layui-input-block">
+					<select name="Subclass" lay-verify="required">
+						<option value="">请选择指标小类</option>
+					</select>
+				</div>
+			</li>
+			<li class="layui-form-item">
+				<label class="layui-form-label">告警类别</label>
+				<div class="layui-input-block">
+					<select name="Subclass" lay-verify="required">
+						<option value="">请选择告警类别</option>
+					</select>
+				</div>
+			</li>
+			<li class="layui-form-item">
+				<label class="layui-form-label">规则</label>
+				<div class="layui-input-block">
+					<select name="Rule" lay-verify="required">
+						<option value="">请选择规则</option>
+					</select>
+				</div>
+			</li>
+			<li class="layui-form-item" style="margin-bottom: 5px;">
+				<label class="layui-form-label" style="padding-top:20px;">规则是阈值时填写</label>
+				<ul class="layui-input-block" style="margin-bottom:10px;">
+					<li style="margin-right:10px;">
+						<select name="UsagSsituation" lay-verify="required">
+							<option value="">请选择</option>
+							<option value="">小于</option>
+							<option value="">大于</option>
+						</select>
+					</li>
+					<li style="margin-right:10px;">
+						<input type="text" name="QuotaMeaning" required lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+					</li>
+					<li>
+						<select name="UsagSsituation" lay-verify="required">
+							<option value="">且</option>
+							<option value="">或</option>
+						</select>
+					</li>
+				</ul>
+				<ul class="layui-input-block">
+					<li style="margin-right:10px;">
+						<select name="UsagSsituation" lay-verify="required">
+							<option value="">请选择</option>
+							<option value="">小于</option>
+							<option value="">大于</option>
+						</select>
+					</li>
+					<li style="margin-right:10px;">
+						<input type="text" name="QuotaMeaning" required lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+					</li>
+					<li>产生告警</li>
+				</ul>
+			</li>
+			<li class="layui-form-item" style="margin-bottom: 5px;">
+				<label class="layui-form-label">规则是孤立点/变点时填写</label>
+				<ul class="layui-input-block" style="padding-top:10px;">
+					<li>
+						<select name="UsagSsituation" lay-verify="required">
+							<option value="">请选择</option>
+						</select>
+					</li>
+					<li>产生告警</li>
+				</ul>
+			</li>
+			<li class="layui-form-item">
+				<label class="layui-form-label">级别</label>
+				<div class="layui-input-block">
+					<select name="Level" lay-verify="required">
+						<option value="">请选择级别</option>
+						<option value="1">一级</option>
+						<option value="2">二级</option>
+						<option value="3">三级</option>
+						<option value="4">四级</option>
+					</select>
+				</div>
+			</li>
+			<li class="layui-form-item">
+				<label class="layui-form-label">指标大类</label>
+				<div class="layui-input-block">
+					<input type="text" name="LargeClass" required lay-verify="required" placeholder="请输入指标大类" autocomplete="off" class="layui-input">
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div id="editModal" style="display: none;">
+		<ul class="layui-form" lay-filter="rule_table">
+			<li class="layui-form-item">
+				<label class="layui-form-label">指标小类</label>
+				<div class="layui-input-block">
+					<select name="Subclass" lay-verify="required">
+						<option value="">请选择指标小类</option>
+					</select>
+				</div>
+			</li>
+			<li class="layui-form-item">
+				<label class="layui-form-label">指标含义</label>
+				<div class="layui-input-block">
+					<input type="text" name="QuotaMeaning" required lay-verify="required" placeholder="请输入指标含义" autocomplete="off"
+					 class="layui-input">
+				</div>
+			</li>
+			<li class="layui-form-item">
+				<label class="layui-form-label">规则</label>
+				<div class="layui-input-block">
+					<select name="Rule" lay-verify="required">
+						<option value="">请选择规则</option>
+					</select>
+				</div>
+			</li>
+			<li class="layui-form-item">
+				<label class="layui-form-label">使用情况</label>
+				<div class="layui-input-block">
+					<select name="UsagSsituation" lay-verify="required">
+						<option value="">请选择使用情况</option>
+					</select>
+				</div>
+			</li>
+			<li class="layui-form-item">
+				<label class="layui-form-label">级别</label>
+				<div class="layui-input-block">
+					<select name="Level" lay-verify="required">
+						<option value="">请选择级别</option>
+					</select>
+				</div>
+			</li>
+			<li class="layui-form-item">
+				<label class="layui-form-label">指标大类</label>
+				<div class="layui-input-block">
+					<input type="text" name="LargeClass" required lay-verify="required" placeholder="请输入告警对象" autocomplete="off" class="layui-input">
+				</div>
+			</li>
+			<li class="layui-form-item">
+				<label class="layui-form-label">告警类别</label>
+				<div class="layui-input-block">
+					<select name="Category" lay-verify="required">
+						<option value="">请选择告警类别</option>
+					</select>
+				</div>
+			</li>
+		</ul>
+	</div>
+</html>

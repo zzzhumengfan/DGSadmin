@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>智能化数据运维-健康度监控</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
+		<link rel="stylesheet" href="../../layuiadmin/style/reset.css" media="all">
+	</head>
+	<body>
+		<div class="layui-fluid">
+			<div class="layui-row">
+				<div class="layui-col-sm12">
+					<div class="layui-card">
+						<div class="layui-card-body">
+							<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+							<div id="linemain" style="width:100%;height:400px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../layuiadmin/layui/layui.js"></script>
+		<script>
+			layui.config({
+				base: '../../layuiadmin/' //静态资源所在路径
+			}).extend({
+				index: 'lib/index' //主入口模块
+			}).use(['index', 'jquery', 'echarts'], function() {
+				var $ = layui.$
+				var echarts = layui.echarts;
+				// 告警数量与告警类对象分布图 基于准备好的dom，初始化echarts实例
+				lineChart = echarts.init(document.getElementById('linemain'));
+				$.get('../../layuiadmin/json/aqi-beijing.json', function(data) {
+					lineChart.setOption(option = {
+						title: {
+							text: '表空间用量%分段图'
+						},
+						tooltip: {
+							trigger: 'axis'
+						},
+						xAxis: {
+							data: data.map(function(item) {
+								return item[0];
+							})
+						},
+						yAxis: {
+							splitLine: {
+								show: false
+							}
+						},
+						toolbox: {
+							left: 'center',
+							feature: {
+								dataZoom: {
+									yAxisIndex: 'none'
+								},
+								restore: {},
+								saveAsImage: {}
+							}
+						},
+						dataZoom: [{
+							type: 'slider', //图表下方的伸缩条
+							show: true, //是否显示
+							realtime: true, //
+							bottom: -5,
+							start: 0, //伸缩条开始位置（1-100），可以随时更改
+							end: 50 //伸缩条结束位置（1-100），可以随时更改
+						}],
+						visualMap: {
+							top: 10,
+							right: 10,
+							pieces: [{
+								gt: 0,
+								lte: 50,
+								color: '#096'
+							}, {
+								gt: 50,
+								lte: 100,
+								color: '#ffde33'
+							}, {
+								gt: 100,
+								lte: 150,
+								color: '#ff9933'
+							}, {
+								gt: 150,
+								lte: 200,
+								color: '#cc0033'
+							}, {
+								gt: 200,
+								lte: 300,
+								color: '#660099'
+							}, {
+								gt: 300,
+								color: '#7e0023'
+							}],
+							outOfRange: {
+								color: '#999'
+							}
+						},
+						series: {
+							name: '表空间用量%分段图',
+							type: 'line',
+							data: data.map(function(item) {
+								return item[1];
+							}),
+							markLine: {
+								silent: true,
+								data: [{
+									yAxis: 50
+								}, {
+									yAxis: 100
+								}, {
+									yAxis: 150
+								}, {
+									yAxis: 200
+								}, {
+									yAxis: 300
+								}]
+							}
+						}
+					});
+				});
+			})
+		</script>
+	</body>
+</html>

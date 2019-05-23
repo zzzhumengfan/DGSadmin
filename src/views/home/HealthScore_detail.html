@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>智能化数据运维-健康度评分</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
+		<link rel="stylesheet" href="../../layuiadmin/style/reset.css" media="all">
+	</head>
+	<body>
+
+		<div class="layui-fluid">
+			<ul class="layui-row">
+				<li class="layui-col-sm6">
+					<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+					<div id="BrokenLineMain" style="width:100%;height:400px;"></div>
+				</li>
+				<li class="layui-col-sm6">
+					<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+					<div id="RadarMain" style="width:100%;height:350px;"></div>
+					<dl>
+						<dt>评分模型说明：</dt>
+						<dd>1.在评分周期内，每个维度初始值都是100分，每出现一条告警则减1分</dd>
+						<dd>2.每个维度的权重均为1/5</dd>
+						<dd>3.最终的健康度评分是5个维度得分的加权平均值</dd>
+					</dl>
+				</li>
+
+			</ul>
+		</div>
+		<script src="../../layuiadmin/layui/layui.js"></script>
+		<script>
+			layui.config({
+				base: '../../layuiadmin/' //静态资源所在路径
+			}).extend({
+				index: 'lib/index' //主入口模块
+			}).use(['index', 'jquery', 'echarts', 'laydate'], function() {
+					var $ = layui.$
+					var echarts = layui.echarts;
+					var laydate = layui.laydate;
+
+					// 健康度按对象分布图 基于准备好的dom，初始化echarts实例
+					BrokenLineChart = echarts.init(document.getElementById('BrokenLineMain'));
+					BrokenLineOption = {
+						title: {
+							text: '北环营业C库实例1健康趋势图'
+						},
+						xAxis: {
+							type: 'category',
+							axisLabel: {
+								rotate: -45
+							},
+							data: ['2018-02', '2018-03', '2018-04', '2018-05', '2018-06', '2018-07', '2018-08','2018-09','2018-10','2018-11','2018-12','2019-01','2019-02']
+						},
+						yAxis: {
+							type: 'value',
+							min: 0,
+							max: 120,
+							interval: 20,
+						},
+						series: [{
+							data: [82, 93, 91, 94, 90, 30, 20,80,77,85,67,95,88],
+							type: 'line',
+							itemStyle: {
+								normal: {
+									label: {
+										show: true, //开启显示
+										position: 'top', //在上方显示
+										textStyle: { //数值样式
+											color: 'black',
+											fontSize: 10
+										}
+									}
+								}
+							}
+							
+						}]
+					};
+
+				
+				// 使用刚指定的配置项和数据显示图表。
+				BrokenLineChart.setOption(BrokenLineOption);
+
+
+				// 健康度按对象分布图 基于准备好的dom，初始化echarts实例
+				RadarChart = echarts.init(document.getElementById('RadarMain')); RadarOption = {
+					title: {
+						text: '北环营业C数据库实例1各维度健康度情况'
+					},
+					tooltip: {},
+					radar: {
+						// shape: 'circle',
+						name: {
+							textStyle: {
+								color: '#fff',
+								backgroundColor: '#999',
+								borderRadius: 3,
+								padding: [3, 5]
+							}
+						},
+						center: ['50%','55%'],//调整雷达图的位置
+                       //radius: 150,//半径，可放大放小雷达图
+						indicator: [{
+								name: '错误',
+								max: 100
+							},
+							{
+								name: '可靠性',
+								max: 100
+							},
+							{
+								name: '可用性',
+								max: 100
+							},
+							{
+								name: '变化',
+								max: 100
+							},
+							{
+								name: '性能',
+								max: 100
+							}
+						]
+					},
+					series: [{
+						name: '',
+						type: 'radar',
+						// areaStyle: {normal: {}},
+						data: [{
+								value: [43, 99, 82, 75, 50, 90],
+								name: ''
+							}
+						]
+					}]
+				};
+
+			
+			// 使用刚指定的配置项和数据显示图表。
+			RadarChart.setOption(RadarOption);
+
+
+
+
+
+
+			});
+		</script>
+	</body>
+</html>

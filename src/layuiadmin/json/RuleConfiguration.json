@@ -1,0 +1,95 @@
+{
+	"code": 0,
+	"msg": "",
+	"data": [{
+		"id":"1",
+		"Subclass": "CPU使用率",
+		"QuotaMeaning": "",
+		"Rule": "孤立点",
+		"UsagSsituation": "已启用",
+		"Level": "三级",
+		"LargeClass": "运营类",
+		"Category": "性能"
+	}, {
+		"id":"2",
+		"Subclass": "Logons",
+		"QuotaMeaning": "每秒/每事务登录的次数",
+		"Rule": "大于10",
+		"UsagSsituation": "已启用",
+		"Level": "二级",
+		"LargeClass": "运营类",
+		"Category": "性能"
+	}, {
+		"id":"3",
+		"Subclass": "Hard parses",
+		"QuotaMeaning": "每秒硬解析的次数",
+		"Rule": "大于每秒100",
+		"UsagSsituation": "已启用",
+		"Level": "一级",
+		"LargeClass": "运营类",
+		"Category": "性能"
+	}, {
+		"id":"4",
+		"Subclass": "表空间利用率",
+		"QuotaMeaning": "",
+		"Rule": "利用率 > 95%异常",
+		"UsagSsituation": "已启用",
+		"Level": "三级",
+		"LargeClass": "运营类",
+		"Category": "性能"
+	}, {
+		"id":"5",
+		"Subclass": "Memory Usage",
+		"QuotaMeaning": "内存使用率",
+		"Rule": "75%~90%，不在此范围时异常",
+		"UsagSsituation": "已启用",
+		"Level": "二级",
+		"LargeClass": "运营类",
+		"Category": "性能"
+	}, {
+		"id":"6",
+		"Subclass": "Buffer Nowait",
+		"QuotaMeaning": "",
+		"Rule": "<98%时异常",
+		"UsagSsituation": "未启用",
+		"Level": "一级",
+		"LargeClass": "运营类",
+		"Category": "可用性"
+	}, {
+		"id":"7",
+		"Subclass": "Latch Hit",
+		"QuotaMeaning": "",
+		"Rule": "<98%时异常",
+		"UsagSsituation": "已启用",
+		"Level": "四级",
+		"LargeClass": "运营类",
+		"Category": "可用性"
+	}, {
+		"id":"8",
+		"Subclass": "CPU使用率",
+		"QuotaMeaning": "",
+		"Rule": "孤立点",
+		"UsagSsituation": "已启用",
+		"Level": "三级",
+		"LargeClass": "运营类",
+		"Category": "性能"
+	}, {
+		"id":"9",
+		"Subclass": "CPU使用率",
+		"QuotaMeaning": "",
+		"Rule": "变点",
+		"UsagSsituation": "已启用",
+		"Level": "三级",
+		"LargeClass": "运营类",
+		"Category": "性能"
+	}, {
+		"id":"10",
+		"Subclass": "Redo size",
+		"QuotaMeaning": "每秒产生的日志大小(单位字节)",
+		"Rule": "孤立点且仅为上升趋势",
+		"UsagSsituation": "已启用",
+		"Level": "三级",
+		"LargeClass": "运营类",
+		"Category": "性能"
+	}]
+}

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>智能化数据运维-健康度评分</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
+		<link rel="stylesheet" href="../../layuiadmin/style/reset.css" media="all">
+	</head>
+	<body>
+
+		<div class="layui-fluid">
+			<ul class="layui-row">
+				<li class="layui-col-sm5">
+					<dl class="layui-card">
+						<dt class="layui-card-header">健康度按对象分布图</dt>
+						<dd class="layui-card-body">
+							<div class="layui-inline">
+								<label class="layui-form-label">月份</label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="test1" placeholder="选择时间" lay-key="1">
+								</div>
+							</div>
+							<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+							<div id="DashboardMain" style="width:100%;height:500px;"></div>
+						</dd>
+					</dl>
+				</li>
+				<li class="layui-col-sm7">
+					<ul class="layui-row">
+						<li class="layui-col-sm6">
+							<dl class="layui-card">
+								<dd class="layui-card-body">
+									<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+									<div id="DashboardMain1" style="width:100%;height:280px;"></div>
+								</dd>
+							</dl>
+						</li>
+						<li class="layui-col-sm6">
+							<dl class="layui-card">
+								<dd class="layui-card-body">
+									<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+									<div id="DashboardMain2" style="width:100%;height:280px;"></div>
+								</dd>
+							</dl>
+						</li>
+						<li class="layui-col-sm6">
+							<dl class="layui-card">
+								<dd class="layui-card-body">
+									<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+									<div id="DashboardMain3" style="width:100%;height:280px;"></div>
+								</dd>
+							</dl>
+						</li>
+						<li class="layui-col-sm6">
+							<dl class="layui-card">
+								<dd class="layui-card-body">
+									<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+									<div id="DashboardMain4" style="width:100%;height:280px;"></div>
+								</dd>
+							</dl>
+						</li>
+					</ul>
+				</li>
+
+			</ul>
+		</div>
+		<script src="../../layuiadmin/layui/layui.js"></script>
+		<script>
+			layui.config({
+				base: '../../layuiadmin/' //静态资源所在路径
+			}).extend({
+				index: 'lib/index' //主入口模块
+			}).use(['index', 'jquery', 'echarts', 'laydate','layer'], function() {
+				var $ = layui.$
+				var echarts = layui.echarts;
+				var laydate = layui.laydate;
+				var layer = layui.layer;
+				//选择时间
+				laydate.render({
+					elem: '#test1',
+					type: 'month'
+				});
+				// 健康度按对象分布图 基于准备好的dom，初始化echarts实例
+				DashboardChart = echarts.init(document.getElementById('DashboardMain'));
+				DashboardOption = {
+					tooltip: {
+						formatter: "{a} <br/>{b} : {c}%"
+					},
+					series: [{
+						name: '北环营业C库健康度',
+						type: 'gauge',
+						detail: {
+							formatter: '{value}%'
+						},
+						data: [{
+							value: 50,
+							name: '北环营业C库健康度',
+							bottom: "bottom"
+						}]
+					}]
+				};
+				// 使用刚指定的配置项和数据显示图表。
+				DashboardChart.setOption(DashboardOption);
+				
+				$("#DashboardMain1").click(function(){
+					layer.open({
+						type: 2, //此处以iframe举例
+						title: '',
+						scrollbar: false, //屏蔽浏览器滚动条
+						area: ['1000px', '500px'],
+						offset: 'auto',
+						maxmin: true,
+						content: 'HealthScore_detail.html',
+						btn2: function() {
+							layer.closeAll();
+						}
+					});
+				})
+				
+				
+				
+
+				// 数据库健康度评分仪表盘1 基于准备好的dom，初始化echarts实例
+				DashboardChart1 = echarts.init(document.getElementById('DashboardMain1'));
+				DashboardOption1 = {
+					tooltip: {
+						formatter: "{a} <br/>{b} : {c}%"
+					},
+					series: [{
+						name: '北环营业C库实例1健康度',
+						type: 'gauge',
+						detail: {
+							formatter: '{value}%'
+						},
+						data: [{
+							value: 50,
+							name: '北环营业C库实例1健康度'
+						}]
+					}]
+				};
+				// 使用刚指定的配置项和数据显示图表。
+				DashboardChart1.setOption(DashboardOption1);
+
+
+				// 数据库健康度评分仪表盘2 基于准备好的dom，初始化echarts实例
+				DashboardChart2 = echarts.init(document.getElementById('DashboardMain2'));
+				DashboardOption2 = {
+					tooltip: {
+						formatter: "{a} <br/>{b} : {c}%"
+					},
+					series: [{
+						name: '北环营业C库实例2健康度',
+						type: 'gauge',
+						detail: {
+							formatter: '{value}%'
+						},
+						data: [{
+							value: 50,
+							name: '北环营业C库实例2健康度'
+						}]
+					}]
+				};
+				// 使用刚指定的配置项和数据显示图表。
+				DashboardChart2.setOption(DashboardOption2);
+
+
+				// 数据库健康度评分仪表盘3 基于准备好的dom，初始化echarts实例
+				DashboardChart3 = echarts.init(document.getElementById('DashboardMain3'));
+				DashboardOption3 = {
+					tooltip: {
+						formatter: "{a} <br/>{b} : {c}%"
+					},
+					series: [{
+						name: '北环营业C库实例3健康度',
+						type: 'gauge',
+						detail: {
+							formatter: '{value}%'
+						},
+						data: [{
+							value: 50,
+							name: '北环营业C库实例3健康度'
+						}]
+					}]
+				};
+				// 使用刚指定的配置项和数据显示图表。
+				DashboardChart3.setOption(DashboardOption3);
+
+				// 数据库健康度评分仪表盘4 基于准备好的dom，初始化echarts实例
+				DashboardChart4 = echarts.init(document.getElementById('DashboardMain4'));
+				DashboardOption4 = {
+					tooltip: {
+						formatter: "{a} <br/>{b} : {c}%"
+					},
+					series: [{
+						name: '北环营业C库实例4健康度',
+						type: 'gauge',
+						detail: {
+							formatter: '{value}%'
+						},
+						data: [{
+							value: 50,
+							name: '北环营业C库实例4健康度'
+						}]
+					}]
+				};
+				// 使用刚指定的配置项和数据显示图表。
+				DashboardChart4.setOption(DashboardOption4);
+
+
+
+
+
+
+			});
+		</script>
+	</body>
+</html>
