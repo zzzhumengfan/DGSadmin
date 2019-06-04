@@ -14,7 +14,7 @@
 
 		<div class="layui-fluid">
 			<ul class="layui-row">
-				<li class="layui-col-sm5">
+				<li class="layui-col-sm12">
 					<dl class="layui-card">
 						<dt class="layui-card-header">健康度按对象分布图</dt>
 						<dd class="layui-card-body">
@@ -29,13 +29,13 @@
 						</dd>
 					</dl>
 				</li>
-				<li class="layui-col-sm7">
+				<li class="layui-col-sm12">
 					<ul class="layui-row">
 						<li class="layui-col-sm6">
 							<dl class="layui-card">
 								<dd class="layui-card-body">
 									<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-									<div id="DashboardMain1" style="width:100%;height:280px;"></div>
+									<div id="DashboardMain1" style="width:100%;height:400px;"></div>
 								</dd>
 							</dl>
 						</li>
@@ -43,7 +43,7 @@
 							<dl class="layui-card">
 								<dd class="layui-card-body">
 									<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-									<div id="DashboardMain2" style="width:100%;height:280px;"></div>
+									<div id="DashboardMain2" style="width:100%;height:400px;"></div>
 								</dd>
 							</dl>
 						</li>
@@ -51,7 +51,7 @@
 							<dl class="layui-card">
 								<dd class="layui-card-body">
 									<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-									<div id="DashboardMain3" style="width:100%;height:280px;"></div>
+									<div id="DashboardMain3" style="width:100%;height:400px;"></div>
 								</dd>
 							</dl>
 						</li>
@@ -59,7 +59,7 @@
 							<dl class="layui-card">
 								<dd class="layui-card-body">
 									<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-									<div id="DashboardMain4" style="width:100%;height:280px;"></div>
+									<div id="DashboardMain4" style="width:100%;height:400px;"></div>
 								</dd>
 							</dl>
 						</li>
@@ -74,7 +74,7 @@
 				base: '../../layuiadmin/' //静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index', 'jquery', 'echarts', 'laydate','layer'], function() {
+			}).use(['index', 'jquery', 'echarts', 'laydate', 'layer'], function() {
 				var $ = layui.$
 				var echarts = layui.echarts;
 				var laydate = layui.laydate;
@@ -91,22 +91,47 @@
 						formatter: "{a} <br/>{b} : {c}%"
 					},
 					series: [{
-						name: '北环营业C库健康度',
-						type: 'gauge',
-						detail: {
-							formatter: '{value}%'
+							name: '自身健康度',
+							type: 'gauge', //仪表盘
+							radius: '50%',
+							center: ['20%', '50%'], // 默认全局居中
+							detail: {
+								formatter: '{value}%'
+							},
+							data: [{
+								value: 20,
+								name: '自身健康度'
+							}]
 						},
-						data: [{
-							value: 50,
+						{
 							name: '北环营业C库健康度',
-							bottom: "bottom"
-						}]
-					}]
+							type: 'gauge', //仪表盘
+							detail: {
+								formatter: '{value}%'
+							},
+							data: [{
+								value: 50,
+								name: '北环营业C库健康度'
+							}]
+						},{
+							name: '实例健康度',
+							type: 'gauge', //仪表盘
+							radius: '50%',
+							center: ['80%', '50%'], // 默认全局居中
+							detail: {
+								formatter: '{value}%'
+							},
+							data: [{
+								value: 81,
+								name: '实例健康度'
+							}]
+						}
+					]
 				};
 				// 使用刚指定的配置项和数据显示图表。
 				DashboardChart.setOption(DashboardOption);
-				
-				$("#DashboardMain1").click(function(){
+
+				$("#DashboardMain1").click(function() {
 					layer.open({
 						type: 2, //此处以iframe举例
 						title: '',
@@ -120,9 +145,9 @@
 						}
 					});
 				})
-				
-				
-				
+
+
+
 
 				// 数据库健康度评分仪表盘1 基于准备好的dom，初始化echarts实例
 				DashboardChart1 = echarts.init(document.getElementById('DashboardMain1'));

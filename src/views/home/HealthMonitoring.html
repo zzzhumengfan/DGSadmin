@@ -37,7 +37,7 @@
 					<div class="layui-card">
 						<div class="layui-card-body">
 							<ul class="layui-row layui-form">
-								<li class=" layui-col-sm5">
+								<li class="layui-col-sm5">
 									<div class="layui-form-item">
 										<label class="layui-form-label">数据时间</label>
 										<div class="layui-input-inline">
@@ -51,10 +51,23 @@
 										</div>
 									</div>
 									<div class="layui-form-item">
-										<label class="layui-form-label">指标小类</label>
+										<label class="layui-form-label">指标类别</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required" placeholder="请输入指标小类" autocomplete="off"
+											<input type="text" name="title" required lay-verify="required" placeholder="请输入指标类别" autocomplete="off"
 											 class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">告警级别</label>
+										<div class="layui-input-block">
+											<select name="city" lay-verify="required">
+												<option value=""></option>
+												<option value="0">全部</option>
+												<option value="1">一级</option>
+												<option value="2">二级</option>
+												<option value="3">三级</option>
+												<option value="4">四级</option>
+											</select>
 										</div>
 									</div>
 								</li>
@@ -67,9 +80,9 @@
 										</div>
 									</div>
 									<div class="layui-form-item">
-										<label class="layui-form-label">告警类别</label>
+										<label class="layui-form-label">指标大类</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required" placeholder="请输入告警类别" autocomplete="off"
+											<input type="text" name="title" required lay-verify="required" placeholder="请输入指标小类" autocomplete="off"
 											 class="layui-input">
 										</div>
 									</div>
@@ -83,7 +96,7 @@
 										</div>
 									</div>
 									<div class="layui-form-item">
-										<label class="layui-form-label">指标大类</label>
+										<label class="layui-form-label">指标小类</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required" placeholder="请输入指标大类" autocomplete="off"
 											 class="layui-input">
@@ -101,9 +114,9 @@
 							<table id="health_table" lay-filter="table"></table>
 							<script type="text/html" id="toolbar">
 								<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-                           <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                           <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-                            </script>
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+              </script>
 						</div>
 					</div>
 				</div>
@@ -309,7 +322,7 @@
 								align: 'center'
 							}, {
 								field: 'Category',
-								title: '告警类别',
+								title: '指标类别',
 								unresize: true, //是否禁用拖拽列宽（默认：false）
 								align: 'center'
 							}, {
