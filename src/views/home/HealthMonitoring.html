@@ -377,16 +377,17 @@
 						});
 					} else if (layEvent === 'edit') { //编辑
 					//编辑框 数据回显
-					    form.val("health_table", {
-                             "Subclass": data.Subclass ,
-                             "Level":  data.Level,
-                             "State":  data.State,
-                             "Category":  data.Category,
-                             "ReasonsForDetails":  data.ReasonsForDetails,
-                             "Object":  data.object,
-                             "LargeClass":  data.LargeClass,
-                             "DataValue":  data.DataValue
+					    form.val("editModal", {
+                             "Subclass": data.Subclass ,//指标小类
+							 "Level":data.Level,//告警级别
+                             "State":  data.State,//告警状态
+                             "Category":  data.Category,//告警类别
+                             "ReasonsForDetails":  data.ReasonsForDetails,//告警原因详述
+                             "Object":  data.object,//告警对象
+                             "LargeClass":  data.LargeClass,//指标大类
+                             "DataValue":  data.DataValue//告警数据值
                         })
+						form.render('select','editModal');//更新 lay-filter="editModal" 所在容器内的全部 select 状态
 						layer.open({
 							type: 1,
 							title: '修改',
@@ -410,7 +411,7 @@
 		</script>
 	</body>
 	<div id="editModal" style="display: none;">
-		<ul class="layui-form" lay-filter="health_table">
+		<ul class="layui-form" lay-filter="editModal">
 			<li class="layui-form-item">
 				<label class="layui-form-label">指标小类</label>
 				<div class="layui-input-block">
@@ -420,7 +421,14 @@
 			<li class="layui-form-item">
 				<label class="layui-form-label">告警级别</label>
 				<div class="layui-input-block">
-					<input type="text" name="Level" required lay-verify="required" placeholder="请输入告警级别" autocomplete="off" class="layui-input">
+					<select id="Level" name="Level" lay-verify="required">
+						<option value="">请选择告警级别</option>
+						<option value="全部">全部</option>
+						<option value="一级">一级</option>
+						<option value="二级">二级</option>
+						<option value="三级">三级</option>
+						<option value="四级">四级</option>
+					</select>
 				</div>
 			</li>
 			<li class="layui-form-item">
